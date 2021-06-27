@@ -7,10 +7,14 @@ nav {
     color: white;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
 .nav-links{
     width: 50%;
     display: flex;
     justify-content: space-around;
-    list-style: none;
     align-items: center;
 }

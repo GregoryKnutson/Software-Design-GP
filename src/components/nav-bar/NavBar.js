@@ -1,5 +1,6 @@
 import React from 'react';
-import "./NavBar.css"
+import './NavBar.css'
+import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
@@ -7,9 +8,39 @@ const NavBar = () => {
     <nav>
         <h1>Fuel Website</h1>
         <ul className = 'nav-links'>
-            <li>Fuel Quote</li>
-            <li>Fuel Quote History</li>
-            <li>Profile Management</li>
+            <NavLink 
+                to="/"
+                exact
+                activeStyle={{
+                    fontWeight: "bold",
+                }}>
+                Home
+            </NavLink>
+
+            <NavLink 
+                to="/fuelquote"
+                activeStyle={{
+                    fontWeight: "bold",
+                }}>
+                Fuel Quote
+            </NavLink>
+
+            <NavLink 
+                to="/history"
+                activeStyle={{
+                    fontWeight: "bold",
+                }}>
+                Fuel Quote History
+            </NavLink>
+
+            <NavLink 
+                to="/profile"
+                activeStyle={{
+                    fontWeight: "bold",
+                }}>
+                Profile Management
+            </NavLink>
+
         </ul>
     </nav>
     );
