@@ -9,6 +9,7 @@ const NavBar = () => {
         <h1>Fuel Website</h1>
         <ul className = 'nav-links'>
             <NavLink 
+                className='nav-item'
                 to="/"
                 exact
                 activeStyle={{
@@ -18,6 +19,7 @@ const NavBar = () => {
             </NavLink>
 
             <NavLink 
+                className='nav-item'
                 to="/fuelquote"
                 activeStyle={{
                     fontWeight: "bold",
@@ -26,6 +28,7 @@ const NavBar = () => {
             </NavLink>
 
             <NavLink 
+                className='nav-item'
                 to="/history"
                 activeStyle={{
                     fontWeight: "bold",
@@ -34,6 +37,7 @@ const NavBar = () => {
             </NavLink>
 
             <NavLink 
+                className='nav-item'
                 to="/profile"
                 activeStyle={{
                     fontWeight: "bold",

@@ -14,16 +14,22 @@ const FuelQuote = () => {
 
     return(
         <div>
-            <NavBar/>
+        <NavBar/>
+        <div className="fuelquote">
+            <form className="fuelquote__container">
+            <div className="title">
             <h1>Fuel Quote</h1>
-                <div>
+            </div>
+                <div className="formbox">
+                <div className= "in">
                     <label>Gallons Requested:</label>
-                    <input type="number"
+                    <input
+                        type="number"
                         value={gallonsRequestedState}
                         onChange={(e)=>setGallonsRequested(e.target.value)}
                     />
                 </div>
-                <div>
+                <div className= "in">
                     <label>Delivery Address:</label>
                     <input 
                         type="text"
@@ -32,15 +38,7 @@ const FuelQuote = () => {
                         onChange={deliveryAddressState ? nothing : setDeliveryAddressState}
                     />
                 </div>
-                <div>
-                    <label>Delivery Date:</label>
-                    <DatePicker
-                        onChange={setDeliveryDateState}
-                        value={deliveryDateState}
-                        minDate={new Date()}
-                    />
-                </div>
-                <div>
+                <div className= "in">
                     <label>Suggested Price Per Gallon:</label>
                     <input 
                         type="text"
@@ -49,7 +47,7 @@ const FuelQuote = () => {
                         onChange={suggestedPriceState ? nothing : setSuggestedPriceState}
                     />
                 </div>
-                <div>
+                <div className= "in">
                     <label>Amount Due:</label>
                     <input 
                         type="text"
@@ -58,6 +56,24 @@ const FuelQuote = () => {
                         onChange={amountDueState ? nothing : setAmountDueState}
                     />
                 </div>
+                </div>
+                <div className="in">
+                    <label>Delivery Date:</label>
+                    <DatePicker
+                        onChange={setDeliveryDateState}
+                        value={deliveryDateState}
+                        minDate={new Date()}
+                    />
+                </div>
+                <div className="button">
+                    <input 
+                        className="calculate"
+                        type= "button" 
+                        value="Calculate"
+                    />
+                </div>
+            </form>
+        </div>
         </div>
     );
 }

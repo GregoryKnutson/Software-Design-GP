@@ -7,7 +7,7 @@ nav {
     color: white;
 }
 
-a {
+.nav-item {
     text-decoration: none;
     color: white;
 }

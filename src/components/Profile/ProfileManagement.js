@@ -1,23 +1,32 @@
 import React from 'react';
+import NavBar from "../nav-bar/NavBar";
 
 function ProfileManagement() {
   return (
     <div>
+      <NavBar></NavBar>
       <header>
         <h1 align="left">Profile Management</h1><break></break>
         <p align="left">In Order to submit a request for fuel, you must first complete your profile.</p>
       </header>
       <form>
-        <label for="full_name">Full name:</label>
-        <input type="text" id="full_name" maxlength="50" required></input><br></br>
-        <label for="address1">Address 1:</label>
-        <input type="text" id="address1" maxlength="100" required></input>
-        <label for="address2">Address 2:</label>
-        <input type="text" id="address2" maxlength="100" placeholder="Optional"></input><br></br>
-        <label for="city">City:</label>
-        <input type="text" id="city" maxlength="100" required></input>
-        <label for="state">State:</label>
-        <select id="state" required>
+        <div>
+          <label for="full_name">Full name:&nbsp;&nbsp;</label>
+          <input type="text" id="full_name" maxlength="50" size="50" required></input>
+        </div>
+        <div>
+          <br></br>
+          <label for="address1">Address 1:&nbsp;&nbsp;</label> 
+          <input type="text" id="address1" maxlength="100" required></input>
+          <label for="address2">&nbsp;&nbsp;&nbsp;Address 2:&nbsp;&nbsp;</label>
+          <input type="text" id="address2" maxlength="100" placeholder="Optional"></input>
+        </div>
+        <div>
+         <br></br>
+         <label for="city">City:&nbsp;&nbsp;</label>
+         <input type="text" id="city" maxlength="100" required></input>
+         <label for="state">&nbsp;&nbsp;&nbsp;State:&nbsp;&nbsp;</label>
+         <select id="state" required>
           <option disabled selected value>Select</option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
@@ -69,10 +78,14 @@ function ProfileManagement() {
           <option value="WV">West Virginia</option>
           <option value="WI">Wisconsin</option>
           <option value="WY">Wyoming</option>
-        </select>
-        <label for="zip">Zip:</label>
-        <input type="tel" id="zip" maxlength="9" minlength="5" required></input><br></br><br></br>
-        <input type="submit"></input>
+         </select>
+         <label for="zip">&nbsp;&nbsp;&nbsp;Zip:&nbsp;&nbsp;</label>
+         <input type="tel" id="zip" maxlength="9" minlength="5" required></input> 
+        </div>
+        <div>
+          <br></br>
+          <input type="submit"></input>
+        </div>
       </form>
     </div>
 
