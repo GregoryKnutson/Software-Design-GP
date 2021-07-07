@@ -1,4 +1,4 @@
 import "./style.scss"
 
-export { Login } from "./Login"
-export { Register } from "./Register"
+export { Login } from "./Login.jsx"
+export { Register } from "./Register.jsx"

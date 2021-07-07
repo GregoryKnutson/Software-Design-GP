@@ -27,6 +27,25 @@
     padding-right: 50px;
     padding-bottom: 15px;
   }
+  .address {
+    padding-bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .add {
+    width: 40%;
+  }
+  .city {
+    width: 30%;
+  }
+  .state {
+    width: 10%;
+  }
+  .zip {
+    width: 10%;
+  }
+
   .button {
     padding-top: 10px;
     display: flex;

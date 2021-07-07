@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import auth from '../../auth';
 import loginImg from "./loginPic.svg";
 
 export class Login extends React.Component {
@@ -7,6 +9,20 @@ export class Login extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    handleClick(props) {
+        console.log("Logging in")
+        auth.login()
+
+        if (auth.isAuthenticated()){
+            
+            return (
+                <Redirect to="/home"/>
+            )
+        }
+        
+    }
+
 
     render() {
         return (
@@ -28,7 +44,7 @@ export class Login extends React.Component {
                 </div>
             </div>
             <div className="footer">
-                <button type="button" className="btn">Login</button>
+                <button type="button" className="btn" onClick={() => this.handleClick()}>Login</button>
             </div>
         </div>
         );
