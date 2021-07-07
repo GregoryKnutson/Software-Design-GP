@@ -1,10 +1,16 @@
 import React from 'react';
 import './NavBar.css'
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import fakeAuth from '../../auth';
 
 const NavBar = () => {
+    const history = useHistory();
+
+    const logout=()=>{
+        fakeAuth.signout()
+        history.push("/login")
+    }
 
     return (
     <nav>
@@ -48,6 +54,7 @@ const NavBar = () => {
             </NavLink>
             <button
                 className='signout'
+                onClick={logout}
             >
                 Sign Out
             </button>
