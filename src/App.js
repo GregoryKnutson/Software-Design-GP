@@ -18,8 +18,8 @@ const App = () => {
         <PrivateRoute path="/home" component={Home} />
         <Route path="/login" component={Logins} />
         <Route path="/fuelquote" component={FuelQuote} />
-        <PrivateRoute path="/history" component={FuelQuoteHistory}/>
-        <PrivateRoute path="/profile" component={ProfileManagement}/>
+        <Route path="/history" component={FuelQuoteHistory}/>
+        <Route path="/profile" component={ProfileManagement}/>
       </Switch>
     </BrowserRouter>
   );
