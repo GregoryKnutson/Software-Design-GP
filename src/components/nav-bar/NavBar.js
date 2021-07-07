@@ -1,9 +1,11 @@
 import React from 'react';
 import './NavBar.css'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import fakeAuth from '../../auth';
 
 const NavBar = () => {
+
     return (
     <nav>
         <h1>Fuel Website</h1>
@@ -44,6 +46,11 @@ const NavBar = () => {
                 }}>
                 Profile Management
             </NavLink>
+            <button
+                className='signout'
+            >
+                Sign Out
+            </button>
 
         </ul>
     </nav>

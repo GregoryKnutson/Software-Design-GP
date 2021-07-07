@@ -1,30 +1,35 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import auth from '../../auth';
+import fakeAuth from '../../auth';
 import loginImg from "./loginPic.svg";
 
 export class Login extends React.Component {
+
+    state = {
+        redirectToReferrer: false
+    }
     
     constructor(props) {
         super(props);
     }
 
-    handleClick(props) {
-        console.log("Logging in")
-        auth.login()
-
-        if (auth.isAuthenticated()){
-            
-            return (
-                <Redirect to="/home"/>
-            )
-        }
-        
+    login = () => {
+        fakeAuth.authenticate(() => {
+            this.setState(() => ({
+                redirectToReferrer: true
+            }))
+        })
     }
 
-
     render() {
+        const { redirectToReferrer } = this.state
+
+        if (redirectToReferrer === true) {
+            return (
+                <Redirect to='/home' />
+            )
+        }
         return (
         <div className="base-container" ref={this.props.containerRef}>
             <div className="header">Login</div>
@@ -44,7 +49,7 @@ export class Login extends React.Component {
                 </div>
             </div>
             <div className="footer">
-                <button type="button" className="btn" onClick={() => this.handleClick()}>Login</button>
+                <button type="button" className="btn" onClick={this.login}>Login</button>
             </div>
         </div>
         );

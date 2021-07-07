@@ -1,20 +1,19 @@
-class Auth {
-    constructor() {
-        this.authenticated = false
+const fakeAuth = {
+    isAuthenticated: false,
+    authenticate(cb) {
+      this.isAuthenticated = true
+      setTimeout(cb, 100) // fake async
+    },
+    signout(cb) {
+      this.isAuthenticated = false
+      setTimeout(cb, 100) // fake async
+      console.log("signed out")
+    },
+    checkIsAuthenticated(){
+        if (this.isAuthenticated === true)
+            return true
+        else return false
     }
+  }
 
-    login() {
-        this.authenticated = true
-    }
-
-    logout(){
-        this.authenticated = false
-    }
-
-    isAuthenticated() {
-        console.log(this.authenticated)
-        return this.authenticated
-    }
-}
-
-export default new Auth()
+  export default fakeAuth

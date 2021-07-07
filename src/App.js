@@ -17,9 +17,9 @@ const App = () => {
         </Route>
         <PrivateRoute path="/home" component={Home} />
         <Route path="/login" component={Logins} />
-        <Route path="/fuelquote" component={FuelQuote} />
-        <Route path="/history" component={FuelQuoteHistory}/>
-        <Route path="/profile" component={ProfileManagement}/>
+        <PrivateRoute path="/fuelquote" component={FuelQuote} />
+        <PrivateRoute path="/history" component={FuelQuoteHistory}/>
+        <PrivateRoute path="/profile" component={ProfileManagement}/>
       </Switch>
     </BrowserRouter>
   );

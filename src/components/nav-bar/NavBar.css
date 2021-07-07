@@ -10,6 +10,12 @@ nav {
 .nav-item {
     text-decoration: none;
     color: white;
+    font-family: sans-serif;
+}
+
+.nav-item:hover {
+    text-decoration: none;
+    color: blue;
 }
 
 .nav-links{
@@ -17,4 +23,18 @@ nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+
+.signout{
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    color: white;
+    font-family: sans-serif;
+}
+
+.signout:hover{
+    color:blue;
 }
