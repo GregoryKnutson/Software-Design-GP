@@ -11,21 +11,21 @@ function ProfileManagement() {
       </header>
       <form>
         <div>
-          <label for="full_name">Full name:&nbsp;&nbsp;</label>
-          <input type="text" id="full_name" maxlength="50" size="50" required></input>
+          <label htmlFor="full_name">Full name:&nbsp;&nbsp;</label>
+          <input type="text" id="full_name" maxLength="50" size="50" required></input>
         </div>
         <div>
           <br></br>
-          <label for="address1">Address 1:&nbsp;&nbsp;</label> 
-          <input type="text" id="address1" maxlength="100" required></input>
-          <label for="address2">&nbsp;&nbsp;&nbsp;Address 2:&nbsp;&nbsp;</label>
-          <input type="text" id="address2" maxlength="100" placeholder="Optional"></input>
+          <label htmlFor="address1">Address 1:&nbsp;&nbsp;</label> 
+          <input type="text" id="address1" maxLength="100" required></input>
+          <label htmlFor="address2">&nbsp;&nbsp;&nbsp;Address 2:&nbsp;&nbsp;</label>
+          <input type="text" id="address2" maxLength="100" placeholder="Optional"></input>
         </div>
         <div>
          <br></br>
-         <label for="city">City:&nbsp;&nbsp;</label>
-         <input type="text" id="city" maxlength="100" required></input>
-         <label for="state">&nbsp;&nbsp;&nbsp;State:&nbsp;&nbsp;</label>
+         <label htmlFor="city">City:&nbsp;&nbsp;</label>
+         <input type="text" id="city" maxLength="100" required></input>
+         <label htmlFor="state">&nbsp;&nbsp;&nbsp;State:&nbsp;&nbsp;</label>
          <select id="state" required>
           <option disabled selected value>Select</option>
           <option value="AL">Alabama</option>
@@ -79,8 +79,8 @@ function ProfileManagement() {
           <option value="WI">Wisconsin</option>
           <option value="WY">Wyoming</option>
          </select>
-         <label for="zip">&nbsp;&nbsp;&nbsp;Zip:&nbsp;&nbsp;</label>
-         <input type="tel" id="zip" maxlength="9" minlength="5" required></input> 
+         <label htmlFor="zip">&nbsp;&nbsp;&nbsp;Zip:&nbsp;&nbsp;</label>
+         <input type="tel" id="zip" maxLength="9" minLength="5" required></input> 
         </div>
         <div>
           <br></br>

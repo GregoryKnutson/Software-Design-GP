@@ -61,7 +61,7 @@ const FuelQuote = () => {
                 <div className="formbox">
                 <div className= "in">
                     <label>Gallons Requested:</label>
-                    <input
+                    <input className="numberInput"
                         type="number"
                         name="gallonsRequested"
                         id="gallonsRequested"

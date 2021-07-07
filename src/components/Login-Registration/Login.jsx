@@ -6,24 +6,68 @@ import loginImg from "./loginPic.svg";
 
 export class Login extends React.Component {
 
-    state = {
-        redirectToReferrer: false
-    }
     
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+
+        this.state = {
+            redirectToReferrer: false,
+            username: '',
+            password: '',
+        }
     }
 
-    login = () => {
+    onChange = (e) => {
+        /*
+          Because we named the inputs to match their
+          corresponding values in state, it's
+          super easy to update the state
+        */
+        this.setState({ [e.target.name]: e.target.value });
+      }
+
+    login = (e) => {
+
+        console.log(this.state)
+
+        const formData = new FormData();
+        formData.append("username", this.state.username)
+        formData.append("password", this.state.password)
+
+        fetch(`${process.env.API_URL}/api/login`, {
+            method: 'POST',
+            body: formData,
+          })
+            .then(res => {
+              if(!res.ok) {
+                alert("Invalid username/password!");
+                throw Error('Could not fetch the data for that resource');
+              }
+              if (res.status != 200) {
+                alert("Invalid username/password!");
+              }
+              return res.json();
+            })
+            .then(res => {
+              setAuth(res)
+              window.location.assign("/home")
+            })
+            .catch(error => {
+              console.log(error);
+              setError(true);
+            })
+
+
         fakeAuth.authenticate(() => {
             this.setState(() => ({
                 redirectToReferrer: true
             }))
         })
+        console.log("Logged in")
     }
 
     render() {
-        const { redirectToReferrer } = this.state
+        const { redirectToReferrer, username, password } = this.state
 
         if (redirectToReferrer === true) {
             return (
@@ -31,7 +75,7 @@ export class Login extends React.Component {
             )
         }
         return (
-        <div className="base-container" ref={this.props.containerRef}>
+        <div className="base-container" ref={this.containerRef}>
             <div className="header">Login</div>
             <div className="content">
                 <div className="image">
@@ -40,11 +84,11 @@ export class Login extends React.Component {
                 <div className="form">
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" name="username" placeholder="username"></input>
+                        <input type="text" name="username" placeholder="username" value={username} onChange={this.onChange}></input>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" placeholder="password"></input>
+                        <input type="password" name="password" placeholder="password" value={password} onChange={this.onChange}></input>
                     </div>
                 </div>
             </div>
