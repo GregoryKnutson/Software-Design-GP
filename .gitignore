@@ -25,3 +25,5 @@ yarn-error.log*
 venv
 venv-linux
 __pycache__
+
+.vscode
