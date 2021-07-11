@@ -13,28 +13,26 @@ def index():
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
 def fuelquote_endpoint():
 
-  deliveryAddressTemp = request.form['deliveryAddress']
-  deliveryAddress = json.loads(deliveryAddressTemp)
-  gallonsRequested = request.form['gallonsRequested']
-  deliveryDate = request.form['deliveryDate']
-  suggestedPrice = request.form['suggestedPrice']
-  amountDue = request.form['amountDue']
+  if request.method == 'POST':
+    deliveryAddressTemp = request.form['deliveryAddress']
+    deliveryAddress = json.loads(deliveryAddressTemp)
+    state = deliveryAddress["state"]
+    gallonsRequested = request.form['gallonsRequested']
+    deliveryDate = request.form['deliveryDate']
+    suggestedPrice = request.form['suggestedPrice']
+    amountDue = request.form['amountDue']
 
-  print(deliveryAddress)
-  print(gallonsRequested)
-  print(deliveryDate)
-  print(suggestedPrice)
-  print(amountDue)
+    print(state)
+
+
     
-  return gallonsRequested
+  return ""
 
 @app.route('/api/login', methods=['GET', 'POST'])
 def login_endpoint():
-  
-  username = request.form['username']
-  password = request.form['password']
+  if request.method == 'POST':
+    username = request.form['username']
+    password = request.form['password']
 
-  print(username)
-  print(password)
     
   return ""
