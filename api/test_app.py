@@ -95,7 +95,7 @@ class FlaskTest(unittest.TestCase):
         "address1": "1234 Test Address",
         "address2": "",
         "city": "Houston",
-        "state":"Texas",
+        "state":"TX",
         "zip":"123"
     }
 
