@@ -37,6 +37,7 @@ function ProfileManagement() {
   
   return (
     <div>
+      <NavBar></NavBar>
       <header>
         <h1 align="left">Profile Management</h1><break></break>
         <p align="left">In Order to submit a request for fuel, you must first complete your profile.</p>

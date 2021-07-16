@@ -8,7 +8,7 @@ CORS(app)
 
 @app.route('/', methods=['GET'])
 def index():
-  return "This returns something! Awesome!"
+  return "This returns something."
 
 @app.route('/api/profile', methods=['GET', 'POST'])
 def profile_endpoint():
