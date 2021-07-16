@@ -53,11 +53,17 @@ def fuelquote_endpoint():
     
   return ""
 
+@app.route('/api/register', methods=['GET', 'POST'])
+def register_endpoint():
+  if request.method == 'POST':
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
+    return "Thank you!"
+
 @app.route('/api/login', methods=['GET', 'POST'])
 def login_endpoint():
   if request.method == 'POST':
     username = request.form['username']
     password = request.form['password']
-
-    
-  return ""
+    return "Thank you!"

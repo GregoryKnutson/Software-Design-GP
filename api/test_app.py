@@ -29,6 +29,15 @@ class FlaskTest(unittest.TestCase):
         "state":"TX",
         "zip":"123456"
     }
+    REGISTER_OBJ={
+        "username":"admin",
+        "email":"email@gmail.com",
+        "password":"pass123"
+    }
+    LOGIN_OBJ={
+        "username":"admin",
+        "password":"pass123"
+    }
     FUELQUOTE_OBJ_BROKEN1={
         "gallonsRequested":"a",
         "deliveryAddress":json.dumps(FUELQUOTE_ADDRESS),
@@ -181,6 +190,20 @@ class FlaskTest(unittest.TestCase):
         data=FlaskTest.PROFILE_OBJ_BROKEN6)
         statuscode= response.status_code
         self.assertEqual(statuscode, 400)
+
+    def test13_register(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:8080/api/register',
+        data=FlaskTest.REGISTER_OBJ)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
+    
+    def test14_login(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:8080/api/login',
+        data=FlaskTest.LOGIN_OBJ)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
 
 
 if __name__== "__main__":
