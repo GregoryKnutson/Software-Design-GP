@@ -1,8 +1,15 @@
-# Make sure to install Dependencies
+# Make sure to install Dependencies for Windows
 ### `yarn install`
 ### `cd api`
 ### `python -m venv venv`
 ### `venv\Scripts\activate`
+### `pip install --upgrade --force-reinstall -r requirements.txt`
+
+# Make sure to install Dependencies for Mac
+### `yarn install`
+### `cd api`
+### `python -m venv venv`
+### `source venv/bin/activate`
 ### `pip install --upgrade --force-reinstall -r requirements.txt`
 
 # Getting Started with Create React App
