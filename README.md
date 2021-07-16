@@ -38,3 +38,18 @@ Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 Starts api for mac
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
+# Run Coverage on API for Windows
+
+### `cd api`
+### `venv\Scripts\activate`
+### `coverage run -m test_app`
+### `coverage report -m app.py`
+
+# Run Coverage on API for MAC
+
+### `cd api`
+### `source venv/bin/activate`
+### `coverage run -m test_app`
+### `coverage report -m app.py`
+
+
