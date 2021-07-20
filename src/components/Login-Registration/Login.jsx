@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import fakeAuth from '../../auth';
 import loginImg from "./loginPic.svg";
 import { checkAuth, setAuth } from '../../verifyLogin';
 
