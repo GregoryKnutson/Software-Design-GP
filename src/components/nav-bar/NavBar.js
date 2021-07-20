@@ -3,12 +3,13 @@ import './NavBar.css'
 import { NavLink, useHistory, withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import fakeAuth from '../../auth';
+import { destroyAuth } from '../../verifyLogin';
 
 const NavBar = () => {
     const history = useHistory();
 
     const logout=()=>{
-        fakeAuth.signout()
+        destroyAuth()
         history.push("/login")
     }
 

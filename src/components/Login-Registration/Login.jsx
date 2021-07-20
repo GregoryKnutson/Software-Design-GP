@@ -3,6 +3,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import fakeAuth from '../../auth';
 import loginImg from "./loginPic.svg";
+import { checkAuth, setAuth } from '../../verifyLogin';
 
 export class Login extends React.Component {
 
@@ -58,12 +59,11 @@ export class Login extends React.Component {
             })
 
 
-        fakeAuth.authenticate(() => {
-            this.setState(() => ({
-                redirectToReferrer: true
-            }))
-        })
-        console.log("Logged in")
+            if (checkAuth()) {
+                return (
+                  <Redirect to='/home' />
+                )
+              }
     }
 
     render() {

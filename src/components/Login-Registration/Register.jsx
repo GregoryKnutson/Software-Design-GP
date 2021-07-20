@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import fakeAuth from '../../auth';
 import signupImg from "./signup.svg";
+import { checkAuth, setAuth } from '../../verifyLogin';
 
 export class Register extends React.Component {
     
@@ -35,28 +35,34 @@ export class Register extends React.Component {
         formData.append("email", this.state.email)
         formData.append("password", this.state.password)
 
-        fetch(`${process.env.API_URL}/api/login`, {
-            method: 'POST',
-            body: formData,
-          })
- 
-
-        fakeAuth.authenticate(() => {
-            this.setState(() => ({
-                redirectToReferrer: true
-            }))
-        })
-        console.log("Registered! Please proceed to complete your profile")
+        fetch(`${process.env.API_URL}/api/register`,
+        {
+          method: 'POST',
+          body: formData,
         }
+      )
+        .then(res => {
+          if(!res.ok) {
+            alert("Username or email taken!");
+            throw Error('Could not fetch the data for that resource');
+          }
+          if (res.status != 200) {
+            alert("Username taken!");
+          }
+          return res.json();
+        })
+        .then(res => {
+          setAuth(res)
+          window.location.assign("/profile")
+        })
+        .catch((error) => {
+          console.error('Error: ', error);
+        })
+
+    }
 
     render() {
         const { redirectToReferrer, username, email, password } = this.state
-
-        if (redirectToReferrer === true) {
-            return (
-                <Redirect to='/profile' />
-            )
-        }
 
         return (
         <div className="base-container" ref={this.containerRef}>
