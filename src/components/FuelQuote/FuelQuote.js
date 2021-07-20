@@ -32,7 +32,7 @@ const FuelQuote = () => {
         formData.append('amountDue', amountDueState)
 
         fetch(
-            `${process.env.API_URL}/api/fuelquote`,
+            `${process.env.API_URL}/api/fuelquote?token=${localStorage.getItem('token')}`,
             {
               method: "POST",
               mode: "no-cors",

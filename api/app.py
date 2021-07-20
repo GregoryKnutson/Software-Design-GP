@@ -8,6 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms_sqlalchemy.fields import QuerySelectField
 from datetime import datetime
 from datetime import timedelta
+from functools import wraps
 import random
 import pymysql
 import hashlib
@@ -28,10 +29,25 @@ password = lines[1]
 app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://' + username +':' + password +'@us-cdbr-east-04.cleardb.com/heroku_e7fd00659a64d84'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = 'secret'
 
 db = SQLAlchemy(app)
+
+def token_required(func):
+  @wraps(func)
+  def decorated(*args, **kwargs):
+    token = request.values.get('token')
+    if not token:
+      return jsonify({'Alert!': 'Token is missing!'}), 403
+    try:
+      payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+    except:
+      return jsonify({'Alert!': 'Invalid Token!'}), 403
+    return func(*args, **kwargs)
+
+  return decorated
 
 class usercredentials(db.Model):
   username = db.Column(db.String(20), primary_key=True)
@@ -45,6 +61,7 @@ def index():
   return "This returns something."
 
 @app.route('/api/profile', methods=['GET', 'POST'])
+@token_required
 def profile_endpoint():
   fullname = request.form['fullname']
   if len(fullname) > 50:
@@ -68,6 +85,7 @@ def profile_endpoint():
   return "Your data is submitted"
 
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
+@token_required
 def fuelquote_endpoint():
 
   if request.method == 'POST':
@@ -111,7 +129,6 @@ def register_endpoint():
       'expiration': str(datetime.datetime.utcnow() + timedelta(minutes=30)),
     }, app.config['SECRET_KEY'])
 
-    print(token)
 
     return {'token': token}
 
@@ -132,7 +149,6 @@ def login_endpoint():
       'expiration': str(datetime.datetime.utcnow() + timedelta(minutes=30)),
       }, app.config['SECRET_KEY'])
 
-      print(token)
       return {'token': token}
 
 
