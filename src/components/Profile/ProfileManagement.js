@@ -8,31 +8,68 @@ function ProfileManagement() {
   const [cityState, setcity] = useState("");
   const [stateState, setstate] = useState("");
   const [zipState, setzip] = useState("");
+  const [errorsState, setErrorsState] = useState({});
 
   const submitUser = () => {
-    const formData = new FormData();
-    formData.append('fullname', fullnameState)
-    formData.append('address1',address1State)
-    formData.append('address2', address2State)
-    formData.append('city', cityState)
-    formData.append('state', stateState)
-    formData.append('zip', zipState)
 
-    fetch(
-      `${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}`,
-      {
-        method: "POST",
-        mode: "no-cors",
-        body: formData,
+    function alertObject(obj){      
+      for(var key in obj) {
+      alert(obj[key]);
+      if( typeof obj[key] === 'object' ) {
+          alertObject(obj[key]);
       }
-    )
-      .then((response) => response.json)
-      .then((result) => {
-        console.log("Success: ", result);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
+      }
+  }
+
+    const validate = () =>{
+      let errors = {};
+
+      if (fullnameState == '') errors.fullname = "Name can not be blank."
+      if (address1State == '' || cityState == '' || stateState == '' || zipState == '') errors.address = "Must have a valid address."
+      if (fullnameState.length > 50) errors.fullname = "Name is too long."
+      if (address1State.length > 100) errors.address1 = "Address 1 is too long."
+      if (address2State.length > 100) errors.address2 = "Address 2 is too long."
+      if (cityState.length > 100) errors.city = "City Name is too long."
+      if (stateState.length != 2) errors.state = "Choose valid state."
+      if (zipState.length < 5 || zipState.length > 9) errors.zip = "Please Enter Valid Zip Code."
+
+      if (Object.keys(errors) !== 0){
+        setErrorsState(errors)
+        return errors;
+      }
+    }
+
+    const errors = validate()
+
+    if (Object.keys(errors).length === 0){
+      const formData = new FormData();
+      formData.append('fullname', fullnameState)
+      formData.append('address1',address1State)
+      formData.append('address2', address2State)
+      formData.append('city', cityState)
+      formData.append('state', stateState)
+      formData.append('zip', zipState)
+
+      fetch(
+        `${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}`,
+        {
+          method: "POST",
+          mode: "no-cors",
+          body: formData,
+        }
+      )
+        .then((response) => response.json)
+        .then((result) => {
+          console.log("Success: ", result);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    }
+    else {
+      alertObject(errors)
+    }
+
   };
   
   return (
@@ -93,7 +130,7 @@ function ProfileManagement() {
         </input>
          <label htmlFor="state">&nbsp;&nbsp;&nbsp;State:&nbsp;&nbsp;</label>
          <select id="state" value={stateState} onChange={(e)=>setstate(e.target.value)} required>
-          <option disabled value>Select</option>
+          <option value>Select</option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
           <option value="AZ">Arizona</option>
