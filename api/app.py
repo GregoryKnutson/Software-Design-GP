@@ -65,22 +65,22 @@ def index():
 def profile_endpoint():
   fullname = request.form['fullname']
   if len(fullname) > 50:
-    return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return jsonify({'Alert!': 'Invalid Name!'}), 400
   address1 = request.form['address1']
   if len(address1) > 100:
-    return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return jsonify({'Alert!': 'Invalid Address!'}), 400
   address2 = request.form['address2']
   if len(address2) > 100:
-    return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return jsonify({'Alert!': 'Invalid Address!'}), 400
   city = request.form['city']
   if len(city) > 100:
-    return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return jsonify({'Alert!': 'Invalid City!'}), 400
   state = request.form['state']
   if len(state) != 2:
-    return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return jsonify({'Alert!': 'Invalid State!'}), 400
   zip = request.form['zip']
   if len(zip) < 5 or len(zip) > 9:
-    return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return jsonify({'Alert!': 'Invalid Zipcode!'}), 400
 
   return "Your data is submitted"
 

@@ -39,7 +39,7 @@ function ProfileManagement() {
     <div>
       <NavBar></NavBar>
       <header>
-        <h1 align="left">Profile Management</h1><break></break>
+        <h1 align="left">Profile Management</h1><br></br>
         <p align="left">In Order to submit a request for fuel, you must first complete your profile.</p>
       </header>
       <form>
@@ -93,7 +93,7 @@ function ProfileManagement() {
         </input>
          <label htmlFor="state">&nbsp;&nbsp;&nbsp;State:&nbsp;&nbsp;</label>
          <select id="state" value={stateState} onChange={(e)=>setstate(e.target.value)} required>
-          <option disabled selected value>Select</option>
+          <option disabled value>Select</option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
           <option value="AZ">Arizona</option>

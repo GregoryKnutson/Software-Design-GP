@@ -23,7 +23,7 @@ const FuelQuoteHistory = () => {
     }
 
     return(
-        <div classname="App">
+        <div className="fuelQuoteHistory">
             <NavBar/>
             <h1>Fuel Quote History</h1>
             <ReactBootstrap.Table striped bordered hover>
