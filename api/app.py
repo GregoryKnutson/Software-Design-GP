@@ -70,6 +70,7 @@ def index():
 @app.route('/api/profile', methods=['GET', 'POST'])
 @token_required
 def profile_endpoint():
+
   if request.method == 'POST':
     username = request.values.get('username')
     fullname = request.form['fullname']
@@ -114,6 +115,28 @@ def profile_endpoint():
     db.session.commit()
     return "Your data is submitted"
 
+  if request.method == 'GET':
+    username = request.values.get('username')
+    user = Clientinformation.query.filter_by(usercredentials_username = username).first()
+
+    if user.address2 == 'N/A':
+      newAddress2 = ''
+    else:
+      newAddress2 = user.address2
+
+    dataToReturn = {
+      "fullName": user.fullName,
+      "address1": user.address1,
+      "address2": newAddress2,
+      "city": user.city,
+      "state": user.state,
+      "zipcode": user.zipcode
+    }
+
+    print(dataToReturn)
+
+    return json.dumps(dataToReturn)
+
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
 @token_required
 def fuelquote_endpoint():
@@ -135,7 +158,7 @@ def fuelquote_endpoint():
     if not amountDue.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
     
-  return ""
+  return 200
 
 @app.route('/api/register', methods=['GET', 'POST'])
 def register_endpoint():
