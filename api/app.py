@@ -70,41 +70,49 @@ def index():
 @app.route('/api/profile', methods=['GET', 'POST'])
 @token_required
 def profile_endpoint():
-  username = request.values.get('username')
-  fullname = request.form['fullname']
-  if len(fullname) > 50:
-    return jsonify({'Alert!': 'Invalid Name!'}), 400
-  address1 = request.form['address1']
-  if len(address1) > 100:
-    return jsonify({'Alert!': 'Invalid Address!'}), 400
-  address2 = request.form['address2']
-  if len(address2) > 100:
-    return jsonify({'Alert!': 'Invalid Address!'}), 400
-  city = request.form['city']
-  if len(city) > 100:
-    return jsonify({'Alert!': 'Invalid City!'}), 400
-  state = request.form['state']
-  if len(state) != 2:
-    return jsonify({'Alert!': 'Invalid State!'}), 400
-  zip = request.form['zip']
-  if len(zip) < 5 or len(zip) > 9:
-    return jsonify({'Alert!': 'Invalid Zipcode!'}), 400
+  if request.method == 'POST':
+    username = request.values.get('username')
+    fullname = request.form['fullname']
+    if len(fullname) > 50:
+      return jsonify({'Alert!': 'Invalid Name!'}), 400
+    address1 = request.form['address1']
+    if len(address1) > 100:
+      return jsonify({'Alert!': 'Invalid Address!'}), 400
+    address2 = request.form['address2']
+    if len(address2) > 100:
+      return jsonify({'Alert!': 'Invalid Address!'}), 400
+    city = request.form['city']
+    if len(city) > 100:
+      return jsonify({'Alert!': 'Invalid City!'}), 400
+    state = request.form['state']
+    if len(state) != 2:
+      return jsonify({'Alert!': 'Invalid State!'}), 400
+    zip = request.form['zip']
+    if len(zip) < 5 or len(zip) > 9:
+      return jsonify({'Alert!': 'Invalid Zipcode!'}), 400
 
-  if len(address2) == 0:
-    newaddress2 = "N/A"
-  else:
-    newaddress2 = address2
+    if len(address2) == 0:
+      newaddress2 = "N/A"
+    else:
+      newaddress2 = address2
 
-  user = Clientinformation.query.filter_by(usercredentials_username = username).first()
+    user = Clientinformation.query.filter_by(usercredentials_username = username).first()
 
-  if user:
-    return make_response('Profile Made Already!', 403)
+    #Updates current user
+    if user:
+      user.fullName = fullname
+      user.address1 = address1
+      user.address2 = newaddress2
+      user.city = city
+      user.state = state
+      user.zipcode = zip
+      print("updating")
+    else: #Creates new user 
+      newProfile = Clientinformation(usercredentials_username = username, fullName = fullname, address1 = address1, address2 = newaddress2, city = city, state = state, zipcode = zip)
+      db.session.merge(newProfile)
 
-  newProfile = Clientinformation(usercredentials_username = username, fullName = fullname, address1 = address1, address2 = newaddress2, city = city, state = state, zipcode = zip)
-
-  db.session.merge(newProfile)
-  db.session.commit()
-  return "Your data is submitted"
+    db.session.commit()
+    return "Your data is submitted"
 
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
 @token_required
