@@ -3,7 +3,6 @@ import NavBar from "../nav-bar/NavBar";
 import { getUserId } from "../../verifyLogin";
 
 function ProfileManagement() {
-  const [usernameState, setusername] = useState(getUserId());
   const [fullnameState, setfullname] = useState("");
   const [address1State, setaddress1] = useState("");
   const [address2State, setaddress2] = useState("");
