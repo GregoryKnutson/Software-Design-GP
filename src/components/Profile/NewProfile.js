@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NavBar from "../nav-bar/NavBar";
 import { getUserId } from "../../verifyLogin";
 
-function ProfileManagement() {
+function NewProfile() {
   const [fullnameState, setfullname] = useState("");
   const [address1State, setaddress1] = useState("");
   const [address2State, setaddress2] = useState("");
@@ -51,7 +51,7 @@ function ProfileManagement() {
       formData.append('zip', zipState)
 
       fetch(
-        `${process.env.API_URL}/api/updateprofile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
+        `${process.env.API_URL}/api/newprofile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
         {
           method: "POST",
           mode: "no-cors",
@@ -65,19 +65,17 @@ function ProfileManagement() {
         .catch((error) => {
           console.error("Error: ", error);
         });
-      
+        window.location.href = ("http://localhost:8080/home")
     }
     else {
       alertObject(errors)
     }
-
   };
   
   return (
     <div>
-      <NavBar></NavBar>
       <header>
-        <h1 align="left">Profile Management</h1><br></br>
+        <h1 align="left">New Profile</h1><br></br>
         <p align="left">In Order to submit a request for fuel, you must first complete your profile.</p>
       </header>
       <form>
@@ -204,4 +202,4 @@ function ProfileManagement() {
   );
 }
 
-export default ProfileManagement;
+export default NewProfile;

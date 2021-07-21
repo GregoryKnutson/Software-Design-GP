@@ -67,7 +67,7 @@ class Clientinformation(db.Model):
 def index():
   return "This returns something."
 
-@app.route('/api/profile', methods=['GET', 'POST'])
+@app.route('/api/newprofile', methods=['GET', 'POST'])
 @token_required
 def profile_endpoint():
   username = request.values.get('username')

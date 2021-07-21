@@ -6,6 +6,7 @@ import FuelQuote from './components/FuelQuote/FuelQuote';
 import FuelQuoteHistory from './components/History/History';
 import ProfileManagement from './components/Profile/ProfileManagement';
 import Home from './components/Home/Home';
+import NewProfile from "./components/Profile/NewProfile";
 
 const App = () => {
 
@@ -19,7 +20,8 @@ const App = () => {
         <Route path="/login" component={Logins} />
         <PrivateRoute path="/fuelquote" component={FuelQuote} />
         <PrivateRoute path="/history" component={FuelQuoteHistory}/>
-        <PrivateRoute path="/profile" component={ProfileManagement}/>
+        <PrivateRoute path="/updateprofile" component={ProfileManagement}/>
+        <PrivateRoute path="/newprofile" component={NewProfile}/>
       </Switch>
     </BrowserRouter>
   );

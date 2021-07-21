@@ -46,7 +46,7 @@ const NavBar = () => {
 
             <NavLink 
                 className='nav-item'
-                to="/profile"
+                to="/updateprofile"
                 activeStyle={{
                     fontWeight: "bold",
                 }}>
