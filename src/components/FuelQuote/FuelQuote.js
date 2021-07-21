@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NavBar from "../nav-bar/NavBar";
 import DatePicker from 'react-date-picker';
 import './FuelQuote.scss';
+import { getUserId } from "../../verifyLogin";
 
 const FuelQuote = () => {
 
@@ -32,7 +33,7 @@ const FuelQuote = () => {
         formData.append('amountDue', amountDueState)
 
         fetch(
-            `${process.env.API_URL}/api/fuelquote?token=${localStorage.getItem('token')}`,
+            `${process.env.API_URL}/api/fuelquote?token=${localStorage.getItem('token')}&username=${getUserId()}`,
             {
               method: "POST",
               mode: "no-cors",

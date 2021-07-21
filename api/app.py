@@ -63,6 +63,8 @@ def index():
 @app.route('/api/profile', methods=['GET', 'POST'])
 @token_required
 def profile_endpoint():
+  username = request.values.get('username')
+
   fullname = request.form['fullname']
   if len(fullname) > 50:
     return jsonify({'Alert!': 'Invalid Name!'}), 400
@@ -82,6 +84,7 @@ def profile_endpoint():
   if len(zip) < 5 or len(zip) > 9:
     return jsonify({'Alert!': 'Invalid Zipcode!'}), 400
 
+
   return "Your data is submitted"
 
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
@@ -89,6 +92,8 @@ def profile_endpoint():
 def fuelquote_endpoint():
 
   if request.method == 'POST':
+    username = request.values.get('username')
+    
     deliveryAddressTemp = request.form['deliveryAddress']
     deliveryAddress = json.loads(deliveryAddressTemp)
     state = deliveryAddress["state"]

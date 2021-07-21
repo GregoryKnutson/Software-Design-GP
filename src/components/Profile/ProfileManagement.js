@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import NavBar from "../nav-bar/NavBar";
+import { getUserId } from "../../verifyLogin";
 
 function ProfileManagement() {
   const [fullnameState, setfullname] = useState("");
@@ -51,7 +52,7 @@ function ProfileManagement() {
       formData.append('zip', zipState)
 
       fetch(
-        `${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}`,
+        `${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
         {
           method: "POST",
           mode: "no-cors",
