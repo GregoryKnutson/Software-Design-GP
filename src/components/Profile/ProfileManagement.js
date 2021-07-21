@@ -3,6 +3,7 @@ import NavBar from "../nav-bar/NavBar";
 import { getUserId } from "../../verifyLogin";
 
 function ProfileManagement() {
+  const [usernameState, setusername] = useState(getUserId());
   const [fullnameState, setfullname] = useState("");
   const [address1State, setaddress1] = useState("");
   const [address2State, setaddress2] = useState("");
@@ -24,7 +25,6 @@ function ProfileManagement() {
 
     const validate = () =>{
       let errors = {};
-
       if (fullnameState == '') errors.fullname = "Name can not be blank."
       if (address1State == '' || cityState == '' || stateState == '' || zipState == '') errors.address = "Must have a valid address."
       if (fullnameState.length > 50) errors.fullname = "Name is too long."

@@ -49,12 +49,19 @@ def token_required(func):
 
   return decorated
 
-class usercredentials(db.Model):
+class Usercredentials(db.Model):
   username = db.Column(db.String(20), primary_key=True)
   password = db.Column(db.String(20))
   email = db.Column(db.String(50))
 
-
+class Clientinformation(db.Model):
+  usercredentials_username = db.Column(db.String(20), db.ForeignKey('usercredentials.username'), primary_key=True)
+  fullName = db.Column(db.String(100))
+  address1 = db.Column(db.String(50))
+  address2 = db.Column(db.String(50))
+  city = db.Column(db.String(50))
+  state = db.Column(db.String(2))
+  zipcode = db.Column(db.Integer)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -64,7 +71,6 @@ def index():
 @token_required
 def profile_endpoint():
   username = request.values.get('username')
-
   fullname = request.form['fullname']
   if len(fullname) > 50:
     return jsonify({'Alert!': 'Invalid Name!'}), 400
@@ -84,7 +90,20 @@ def profile_endpoint():
   if len(zip) < 5 or len(zip) > 9:
     return jsonify({'Alert!': 'Invalid Zipcode!'}), 400
 
+  if len(address2) == 0:
+    newaddress2 = "N/A"
+  else:
+    newaddress2 = address2
 
+  user = Clientinformation.query.filter_by(usercredentials_username = username).first()
+
+  if user:
+    return make_response('Profile Made Already!', 403)
+
+  newProfile = Clientinformation(usercredentials_username = username, fullName = fullname, address1 = address1, address2 = newaddress2, city = city, state = state, zipcode = zip)
+
+  db.session.merge(newProfile)
+  db.session.commit()
   return "Your data is submitted"
 
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
@@ -119,12 +138,12 @@ def register_endpoint():
 
     hashed_password = generate_password_hash(password, method='sha256')
 
-    user = usercredentials.query.filter_by(username=username).first()
+    user = Usercredentials.query.filter_by(username=username).first()
 
     if user:
        return make_response('Username taken!', 403)
 
-    newUser = usercredentials(username = username, password = hashed_password, email = email)
+    newUser = Usercredentials(username = username, password = hashed_password, email = email)
 
     db.session.merge(newUser)
     db.session.commit()
@@ -143,7 +162,7 @@ def login_endpoint():
     username = request.form['username']
     password = request.form['password']
 
-    user = usercredentials.query.filter_by(username=username).first()
+    user = Usercredentials.query.filter_by(username=username).first()
 
     if not user:
       return make_response('Unable to verify', 403, {'WWW-Authenticate': 'Basic realm: "Authentication failed!"'})
