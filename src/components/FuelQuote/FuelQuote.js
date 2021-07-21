@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../nav-bar/NavBar";
 import DatePicker from 'react-date-picker';
 import './FuelQuote.scss';
@@ -6,28 +6,61 @@ import { getUserId } from "../../verifyLogin";
 
 const FuelQuote = () => {
 
-    const tempAddress = {
-        address: "1234 Test Address",
-        city: "City",
-        state: "TX",
-        zip: "77423"
+    let address = {
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        zip: ""
     }
 
     const [gallonsRequestedState, setGallonsRequested] = useState("");
-    const [deliveryAddressState, setDeliveryAddressState] = useState(tempAddress);
+    const [currAddress, setCurrAddress] = useState("")
+    const [deliveryAddressState, setDeliveryAddressState] = useState(address);
     const [deliveryDateState, setDeliveryDateState] = useState(new Date());
     const [suggestedPriceState, setSuggestedPriceState] = useState("12");
     const [amountDueState, setAmountDueState] = useState("500");
     const nothing = () => {}
 
 
+    useEffect(() => {
+        fetch(`${process.env.API_URL}/api/fuelquote?token=${localStorage.getItem('token')}&username=${getUserId()}`,
+        {
+          method: 'GET',
+        }
+        )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log('Success: ', result);
+          address.address1 = result.address1
+          address.address2 = result.address2
+          address.city = result.city
+          address.state = result.state
+          address.zip = result.zipcode
+          setDeliveryAddressState(address)
+          setCurrAddress(address.address1)
+          
+        })
+        .catch((error) => {
+          console.error('Error: ', error);
+        });
+      }, [])
+
 
     const handleCalculate = () => {
+
+        let tempAddress = {
+            address: currAddress,
+            city: deliveryAddressState.city,
+            state: deliveryAddressState.state,
+            zip: deliveryAddressState.zip
+        }
+        console.log(tempAddress)
 
         const formData = new FormData();
 
         formData.append('gallonsRequested', gallonsRequestedState)
-        formData.append('deliveryAddress', JSON.stringify(deliveryAddressState))
+        formData.append('deliveryAddress', JSON.stringify(tempAddress))
         formData.append('deliveryDate', deliveryDateState)
         formData.append('suggestedPrice', suggestedPriceState)
         formData.append('amountDue', amountDueState)
@@ -49,13 +82,23 @@ const FuelQuote = () => {
             });
         };
 
+    const handleClick = () => {
+        if (currAddress == deliveryAddressState.address1)
+            if(deliveryAddressState.address2 != 'N/A')
+            setCurrAddress(deliveryAddressState.address2)
+            else
+            alert("No other address")
+        else
+            setCurrAddress(deliveryAddressState.address1)
+    }
+
     
 
     return(
         <div>
         <NavBar/>
         <div className="fuelquote">
-            <form className="fuelquote__container">
+            <div className="fuelquote__container">
             <div className="title">
             <h1>Fuel Quote</h1>
             </div>
@@ -77,9 +120,9 @@ const FuelQuote = () => {
                             type="text"
                             name="address"
                             id="address"
-                            readOnly={!!deliveryAddressState.address}
-                            value={deliveryAddressState.address}
-                            onChange={deliveryAddressState.address ? nothing : setDeliveryAddressState}
+                            readOnly={!!currAddress}
+                            value={currAddress}
+                            onChange={currAddress ? nothing : setCurrAddress}
                         />
                         <input className = "city"
                             type="text"
@@ -106,6 +149,15 @@ const FuelQuote = () => {
                             onChange={deliveryAddressState.zip ? nothing : setDeliveryAddressState}
                         />
                     </div>
+                </div>
+                <div className = "button2">            
+                    <button
+                            name = "changeAddress"
+                            id = "changeAddress"
+                            onClick={handleClick}
+                    >
+                        Change Address
+                    </button>
                 </div>
                 <div className= "in">
                     <label>Suggested Price Per Gallon:</label>
@@ -148,7 +200,8 @@ const FuelQuote = () => {
                         onClick={handleCalculate}
                     />
                 </div>
-            </form>
+            </div>
+
         </div>
         </div>
     );

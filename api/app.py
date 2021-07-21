@@ -157,8 +157,27 @@ def fuelquote_endpoint():
     amountDue = request.form['amountDue']
     if not amountDue.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
+    return "200"
+  
+  if request.method == 'GET':
+    username = request.values.get('username')
+
+    user = Clientinformation.query.filter_by(usercredentials_username = username).first()
+
+    if user:
+      dataToReturn = {
+        "fullName": user.fullName,
+        "address1": user.address1,
+        "address2": user.address2,
+        "city": user.city,
+        "state": user.state,
+        "zipcode": user.zipcode
+      }
+      return json.dumps(dataToReturn)
     
-  return 200
+    else:
+      return jsonify({'Alert!': 'Error somewhere!'}), 400
+
 
 @app.route('/api/register', methods=['GET', 'POST'])
 def register_endpoint():
