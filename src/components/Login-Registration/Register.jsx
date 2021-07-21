@@ -53,7 +53,7 @@ export class Register extends React.Component {
         })
         .then(res => {
           setAuth(res)
-          window.location.assign("/newprofile")
+          window.location.assign("/profile")
         })
         .catch((error) => {
           console.error('Error: ', error);

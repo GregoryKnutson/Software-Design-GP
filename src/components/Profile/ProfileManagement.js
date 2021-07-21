@@ -51,7 +51,7 @@ function ProfileManagement() {
       formData.append('zip', zipState)
 
       fetch(
-        `${process.env.API_URL}/api/updateprofile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
+        `${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
         {
           method: "POST",
           mode: "no-cors",
