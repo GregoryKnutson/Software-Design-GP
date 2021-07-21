@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../nav-bar/NavBar";
 import { getUserId } from "../../verifyLogin";
 
@@ -11,24 +11,27 @@ function ProfileManagement() {
   const [zipState, setzip] = useState("");
   const [errorsState, setErrorsState] = useState({});
 
-fetch(`${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
-{
-  method: 'GET',
-}
-)
-.then((response) => response.json())
-.then((result) => {
-  console.log('Success: ', result);
-  setfullname(result.fullName)
-  setaddress1(result.address1)
-  setaddress2(result.address2)
-  setcity(result.city)
-  setstate(result.state)
-  setzip(result.zipcode)
-})
-.catch((error) => {
-  console.error('Error: ', error);
-});
+
+useEffect(() => {
+  fetch(`${process.env.API_URL}/api/profile?token=${localStorage.getItem('token')}&username=${getUserId()}`,
+  {
+    method: 'GET',
+  }
+  )
+  .then((response) => response.json())
+  .then((result) => {
+    console.log('Success: ', result);
+    setfullname(result.fullName)
+    setaddress1(result.address1)
+    setaddress2(result.address2)
+    setcity(result.city)
+    setstate(result.state)
+    setzip(result.zipcode)
+  })
+  .catch((error) => {
+    console.error('Error: ', error);
+  });
+}, [])
 
   const submitUser = () => {
 
