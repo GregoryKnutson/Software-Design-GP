@@ -11,6 +11,8 @@ from flask_jwt_extended import create_access_token
 
 class FlaskTest(unittest.TestCase):
 
+    CURR_USERNAME = "Test107"
+
     FUELQUOTE_ADDRESS= {
         "address":"1234 Test Address",
         "city":"City",
@@ -21,7 +23,7 @@ class FlaskTest(unittest.TestCase):
     FUELQUOTE_OBJ={
         "gallonsRequested":12,
         "deliveryAddress":json.dumps(FUELQUOTE_ADDRESS),
-        "deliveryDate":"Wed Jul 14 2021 14:29:00 GMT-0500 (Eastern Standard Time)",
+        "deliveryDate":"1233-01-02",
         "suggestedPrice":12,
         "amountDue":500
     }
@@ -33,9 +35,17 @@ class FlaskTest(unittest.TestCase):
         "state":"TX",
         "zip":"123456"
     }
+    PROFILE_OBJ2={
+        "fullname":"Bob Smith",
+        "address1": "1234 Test Address",
+        "address2": "12345 Test Address",
+        "city": "Houston",
+        "state":"TX",
+        "zip":"123456"
+    }
     REGISTER_OBJ={
-        "username":"admin123456",
-        "email":"email12@gmail.com",
+        "username":CURR_USERNAME,
+        "email":CURR_USERNAME,
         "password":"pass123"
     }
     LOGIN_OBJ={
@@ -118,12 +128,12 @@ class FlaskTest(unittest.TestCase):
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
 
-    def test2_fuelquote(mock_jwt_required):
-        tester= app.test_client(mock_jwt_required)
-        response= tester.post('http://localhost:8080/api/fuelquote',
+    def test2_fuelquote(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:8080/api/fuelquote?username=' + FlaskTest.CURR_USERNAME,
         data=FlaskTest.FUELQUOTE_OBJ)
         statuscode= response.status_code
-        mock_jwt_required.assertEqual(statuscode, 200)
+        self.assertEqual(statuscode, 200)
 
     def test3_fuelquote_broken1(self):
         tester= app.test_client(self)
@@ -148,7 +158,7 @@ class FlaskTest(unittest.TestCase):
 
     def test6_profile(self):
         tester= app.test_client(self)
-        response= tester.post('http://localhost:8080/api/profile?username=admin123456',
+        response= tester.post('http://localhost:8080/api/profile?username=' + FlaskTest.CURR_USERNAME,
         data=FlaskTest.PROFILE_OBJ)
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
@@ -209,6 +219,31 @@ class FlaskTest(unittest.TestCase):
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
 
+    def test15_profile(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:8080/api/profile?username=' + FlaskTest.CURR_USERNAME,
+        data=FlaskTest.PROFILE_OBJ2)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
+
+    def test16_updateprofile(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:8080/api/profile?username=' + FlaskTest.CURR_USERNAME,
+        data=FlaskTest.PROFILE_OBJ)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
+
+    def test17_getprofile(self):
+        tester= app.test_client(self)
+        response= tester.get('http://localhost:5000/api/profile?username=' + FlaskTest.CURR_USERNAME)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
+
+    def test18_getfuelquote(self):
+        tester= app.test_client(self)
+        response= tester.get('http://localhost:5000/api/fuelquote?username=' + FlaskTest.CURR_USERNAME)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
 
 if __name__== "__main__":
     unittest.main()
