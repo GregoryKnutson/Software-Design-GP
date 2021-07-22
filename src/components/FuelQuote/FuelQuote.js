@@ -61,7 +61,8 @@ const FuelQuote = () => {
 
         formData.append('gallonsRequested', gallonsRequestedState)
         formData.append('deliveryAddress', JSON.stringify(tempAddress))
-        formData.append('deliveryDate', deliveryDateState)
+        console.log(deliveryDateState.toISOString().substring(0.,10))
+        formData.append('deliveryDate', deliveryDateState.toISOString().substring(0,10))
         formData.append('suggestedPrice', suggestedPriceState)
         formData.append('amountDue', amountDueState)
 

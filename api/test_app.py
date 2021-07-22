@@ -1,9 +1,13 @@
+from api import Clientinformation
+from api import Usercredentials
 import unittest
 import json
 from flask import Flask
 from unittest.mock import patch
 from flask.globals import request
-from app import app
+from api import app, db
+from flask_jwt_extended import create_access_token
+
 
 class FlaskTest(unittest.TestCase):
 
@@ -30,8 +34,8 @@ class FlaskTest(unittest.TestCase):
         "zip":"123456"
     }
     REGISTER_OBJ={
-        "username":"admin",
-        "email":"email@gmail.com",
+        "username":"admin123456",
+        "email":"email12@gmail.com",
         "password":"pass123"
     }
     LOGIN_OBJ={
@@ -114,12 +118,12 @@ class FlaskTest(unittest.TestCase):
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
 
-    def test2_fuelquote(self):
-        tester= app.test_client(self)
+    def test2_fuelquote(mock_jwt_required):
+        tester= app.test_client(mock_jwt_required)
         response= tester.post('http://localhost:8080/api/fuelquote',
         data=FlaskTest.FUELQUOTE_OBJ)
         statuscode= response.status_code
-        self.assertEqual(statuscode, 200)
+        mock_jwt_required.assertEqual(statuscode, 200)
 
     def test3_fuelquote_broken1(self):
         tester= app.test_client(self)
@@ -144,7 +148,7 @@ class FlaskTest(unittest.TestCase):
 
     def test6_profile(self):
         tester= app.test_client(self)
-        response= tester.post('http://localhost:8080/api/profile',
+        response= tester.post('http://localhost:8080/api/profile?username=admin123456',
         data=FlaskTest.PROFILE_OBJ)
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)

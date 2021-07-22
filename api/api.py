@@ -4,6 +4,7 @@ import os
 from flask_cors import CORS
 from flask import Flask, render_template, url_for, request, redirect, session, json, make_response
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 from flask_wtf import FlaskForm
 from wtforms_sqlalchemy.fields import QuerySelectField
 from datetime import datetime
@@ -53,9 +54,11 @@ class Usercredentials(db.Model):
   username = db.Column(db.String(20), primary_key=True)
   password = db.Column(db.String(20))
   email = db.Column(db.String(50))
+  information = relationship("Clientinformation", backref = "Usercredentials", passive_deletes = True, uselist=False)
+  fuelquote = relationship("Fuelquote", backref = "user", passive_deletes = True, uselist = True)
 
 class Clientinformation(db.Model):
-  usercredentials_username = db.Column(db.String(20), db.ForeignKey('usercredentials.username'), primary_key=True)
+  usercredentials_username = db.Column(db.String(20), db.ForeignKey('usercredentials.username', ondelete = "CASCADE"), primary_key=True)
   fullName = db.Column(db.String(100))
   address1 = db.Column(db.String(50))
   address2 = db.Column(db.String(50))
@@ -63,12 +66,19 @@ class Clientinformation(db.Model):
   state = db.Column(db.String(2))
   zipcode = db.Column(db.Integer)
 
+class Fuelquote(db.Model):
+  fuelquoteNum = db.Column(db.Integer, primary_key=True)
+  usercredentials_username = db.Column(db.String(20), db.ForeignKey('usercredentials.username', ondelete = "CASCADE"))
+  deliveryAddress = db.Column(db.String(50))
+  deliveryDate = db.Column(db.Date)
+  suggestedPPG = db.Column(db.Float)
+  amountDue = db.Column(db.Float)
+
 @app.route('/', methods=['GET'])
 def index():
   return "This returns something."
 
 @app.route('/api/profile', methods=['GET', 'POST'])
-@token_required
 def profile_endpoint():
 
   if request.method == 'POST':
@@ -138,7 +148,6 @@ def profile_endpoint():
     return json.dumps(dataToReturn)
 
 @app.route('/api/fuelquote', methods=['GET', 'POST'])
-@token_required
 def fuelquote_endpoint():
 
   if request.method == 'POST':
@@ -151,13 +160,18 @@ def fuelquote_endpoint():
     if not gallonsRequested.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
     deliveryDate = request.form['deliveryDate']
+    print(deliveryDate)
     suggestedPrice = request.form['suggestedPrice']
     if not suggestedPrice.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
     amountDue = request.form['amountDue']
     if not amountDue.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
-    return "200"
+
+    newFuelQuote = Fuelquote(usercredentials_username = username, deliveryAddress = deliveryAddress["address"], deliveryDate = deliveryDate, suggestedPPG = suggestedPrice, amountDue = amountDue)
+    db.session.merge(newFuelQuote)
+    db.session.commit()
+    return "Success"
   
   if request.method == 'GET':
     username = request.values.get('username')
