@@ -240,7 +240,27 @@ def login_endpoint():
 
       return {'token': token}
 
-
-
     return make_response('Unable to verify', 403, {'WWW-Authenticate': 'Basic realm: "Authentication failed!"'})
+
+@app.route('/api/history', methods=['GET'])
+def history_endpoint():
+  username = request.values.get('username')
+
+  #history = Fuelquote.query.filter_by(usercredentials_username = username).first()
+
+  history = db.session.query(Fuelquote)
+  history = history.all()
+  data = []
+
+  for i in history:
+    if (username in i.usercredentials_username) is True:
+      data.append({"quoteNumber": str(i.fuelquoteNum), "deliveryAddress": str(i.deliveryAddress), "deliveryDate": str(i.deliveryDate), "suggestedPrice": str(i.suggestedPPG), "totalAmount": str(i.amountDue)})
+  
+  db.session.commit()
+
+  if history:
+    return json.dumps(data)
+
+  else:
+    return jsonify({'No history found!'})
 
