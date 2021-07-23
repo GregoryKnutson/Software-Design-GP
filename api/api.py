@@ -71,6 +71,7 @@ class Fuelquote(db.Model):
   usercredentials_username = db.Column(db.String(20), db.ForeignKey('usercredentials.username', ondelete = "CASCADE"))
   deliveryAddress = db.Column(db.String(50))
   deliveryDate = db.Column(db.Date)
+  gallonsRequested = db.Column(db.Integer)
   suggestedPPG = db.Column(db.Float)
   amountDue = db.Column(db.Float)
 
@@ -168,7 +169,7 @@ def fuelquote_endpoint():
     if not amountDue.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
 
-    newFuelQuote = Fuelquote(usercredentials_username = username, deliveryAddress = deliveryAddress["address"], deliveryDate = deliveryDate, suggestedPPG = suggestedPrice, amountDue = amountDue)
+    newFuelQuote = Fuelquote(usercredentials_username = username, deliveryAddress = deliveryAddress["address"], deliveryDate = deliveryDate, gallonsRequested = gallonsRequested, suggestedPPG = suggestedPrice, amountDue = amountDue)
     db.session.merge(newFuelQuote)
     db.session.commit()
     return "Success"
