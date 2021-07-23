@@ -254,7 +254,7 @@ def history_endpoint():
 
   for i in history:
     if (username in i.usercredentials_username) is True:
-      data.append({"quoteNumber": str(i.fuelquoteNum), "deliveryAddress": str(i.deliveryAddress), "deliveryDate": str(i.deliveryDate), "suggestedPrice": str(i.suggestedPPG), "totalAmount": str(i.amountDue)})
+      data.append({"quoteNumber": str(i.fuelquoteNum), "deliveryAddress": str(i.deliveryAddress), "deliveryDate": str(i.deliveryDate), "gallonsRequested": str(i.gallonsRequested), "suggestedPrice": str(i.suggestedPPG), "totalAmount": str(i.amountDue)})
   
   db.session.commit()
 
