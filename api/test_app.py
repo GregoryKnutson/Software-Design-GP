@@ -11,7 +11,7 @@ from flask_jwt_extended import create_access_token
 
 class FlaskTest(unittest.TestCase):
 
-    CURR_USERNAME = "Test107"
+    CURR_USERNAME = "Test109"
 
     FUELQUOTE_ADDRESS= {
         "address":"1234 Test Address",
@@ -242,6 +242,12 @@ class FlaskTest(unittest.TestCase):
     def test18_getfuelquote(self):
         tester= app.test_client(self)
         response= tester.get('http://localhost:5000/api/fuelquote?username=' + FlaskTest.CURR_USERNAME)
+        statuscode= response.status_code
+        self.assertEqual(statuscode, 200)
+
+    def test19_gethistory(self):
+        tester= app.test_client(self)
+        response= tester.get('http://localhost:5000/api/history?username=' + FlaskTest.CURR_USERNAME)
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
 
