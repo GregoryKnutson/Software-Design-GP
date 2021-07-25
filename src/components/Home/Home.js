@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import NavBar from "../nav-bar/NavBar";
+import "./Home.css"
 
 const Home = () => {
 
     return(
-        <div>
-            <NavBar/>
-            <h1>Welcome!</h1>
-            <label>Get your fuel quote!</label>
-        </div>
+            <body>
+                <NavBar/>
+                <h1>Welcome!</h1>
+                <label>Get your fuel quote!</label>
+            </body>
     );
 }
 

@@ -1,0 +1,8 @@
+body{
+    font-size: larger;
+    align-items: center;
+    text-align: center;
+    background-image: url(../../oil.svg);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
