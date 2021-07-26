@@ -18,10 +18,10 @@ const NavBar = () => {
         <ul className = 'nav-links'>
             <NavLink 
                 className='nav-item'
-                to="/"
+                to="/home"
                 exact
                 activeStyle={{
-                    fontWeight: "bold",
+                    fontWeight: 800,
                 }}>
                 Home
             </NavLink>
@@ -30,7 +30,7 @@ const NavBar = () => {
                 className='nav-item'
                 to="/fuelquote"
                 activeStyle={{
-                    fontWeight: "bold",
+                    fontWeight: 800,
                 }}>
                 Fuel Quote
             </NavLink>
@@ -39,7 +39,7 @@ const NavBar = () => {
                 className='nav-item'
                 to="/history"
                 activeStyle={{
-                    fontWeight: "bold",
+                    fontWeight: 800,
                 }}>
                 Fuel Quote History
             </NavLink>
@@ -48,7 +48,7 @@ const NavBar = () => {
                 className='nav-item'
                 to="/profile"
                 activeStyle={{
-                    fontWeight: "bold",
+                    fontWeight: 800,
                 }}>
                 Profile Management
             </NavLink>

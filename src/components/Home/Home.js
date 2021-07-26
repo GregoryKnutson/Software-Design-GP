@@ -7,8 +7,10 @@ const Home = () => {
     return(
             <body>
                 <NavBar/>
-                <h1>Welcome!</h1>
-                <label>Get your fuel quote!</label>
+                <div className = "homeText">
+                    <h1>Welcome!</h1>
+                    <label>Get your fuel quote!</label>
+                </div>
             </body>
     );
 }

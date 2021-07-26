@@ -3,6 +3,7 @@ import NavBar from "../nav-bar/NavBar";
 import * as ReactBootstrap from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getUserId } from "../../verifyLogin";
+import "./History.scss"
 
 
 const FuelQuoteHistory = () => {
@@ -42,24 +43,28 @@ const FuelQuoteHistory = () => {
     }
 
     return(
-        <div className="fuelQuoteHistory">
+        <div>
             <NavBar/>
-            <h1>Fuel Quote History</h1>
-            <ReactBootstrap.Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Quote Number</th>
-                        <th>Delivery Address</th>
-                        <th>Delivery Date</th>
-                        <th>Gallons Requested</th>
-                        <th>Suggested Price/Gallon</th>
-                        <th>Total Amount Due</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {myhist.map(renderHistory)}
-                </tbody>
-            </ReactBootstrap.Table>
+            <div className="fuelQuoteHistory">
+                <div className="title">
+                    <h1>Fuel Quote History</h1>
+                </div>
+                <ReactBootstrap.Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Quote Number</th>
+                            <th>Delivery Address</th>
+                            <th>Delivery Date</th>
+                            <th>Gallons Requested</th>
+                            <th>Suggested Price/Gallon</th>
+                            <th>Total Amount Due</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {myhist.map(renderHistory)}
+                    </tbody>
+                </ReactBootstrap.Table>
+            </div>
 
         </div>
     );
