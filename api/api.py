@@ -60,9 +60,9 @@ class Usercredentials(db.Model):
 class Clientinformation(db.Model):
   usercredentials_username = db.Column(db.String(20), db.ForeignKey('usercredentials.username', ondelete = "CASCADE"), primary_key=True)
   fullName = db.Column(db.String(100))
-  address1 = db.Column(db.String(50))
-  address2 = db.Column(db.String(50))
-  city = db.Column(db.String(50))
+  address1 = db.Column(db.String(100))
+  address2 = db.Column(db.String(100))
+  city = db.Column(db.String(100))
   state = db.Column(db.String(2))
   zipcode = db.Column(db.Integer)
 
