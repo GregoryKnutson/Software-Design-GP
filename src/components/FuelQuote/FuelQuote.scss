@@ -62,7 +62,7 @@
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 10px;
-    justify-content: center;
+    justify-content: space-between;
   }
   .button2 {
     display: flex;
@@ -87,7 +87,7 @@
     box-shadow: 0 4px 4px rgba(83, 100, 255, 0.32);
   }
   .calculate {
-    width: 100%;
+    width: 45%;
     color: #fff;
     background-color: rgb(224, 9, 9);
     margin-bottom: 15px;
