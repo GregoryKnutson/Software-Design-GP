@@ -110,6 +110,8 @@ const FuelQuote = () => {
             .then((response) => response.json)
             .then((result) => {
               console.log("Success: ", result);
+              alert("Thank you!")
+              window.location.assign("/home")
             })
             .catch((error) => {
               console.error("Error: ", error);
