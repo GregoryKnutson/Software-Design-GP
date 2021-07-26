@@ -15,7 +15,6 @@ import pymysql
 import hashlib
 import jwt
 import datetime
-import constant
 from werkzeug.security import generate_password_hash, check_password_hash
 
 pymysql.install_as_MySQLdb
