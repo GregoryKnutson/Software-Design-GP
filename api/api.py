@@ -15,6 +15,7 @@ import pymysql
 import hashlib
 import jwt
 import datetime
+import constant
 from werkzeug.security import generate_password_hash, check_password_hash
 
 pymysql.install_as_MySQLdb
@@ -141,7 +142,7 @@ def profile_endpoint():
       "address2": newAddress2,
       "city": user.city,
       "state": user.state,
-      "zipcode": user.zipcode
+      "zipcode": user.zipcode,
     }
 
     print(dataToReturn)
@@ -163,10 +164,12 @@ def fuelquote_endpoint():
     deliveryDate = request.form['deliveryDate']
     print(deliveryDate)
     suggestedPrice = request.form['suggestedPrice']
-    if not suggestedPrice.isdigit():
+    suggestedPrice = float(suggestedPrice)
+    if not isinstance(suggestedPrice, float):
       return jsonify({'Alert!': 'Error somewhere!'}), 400
     amountDue = request.form['amountDue']
-    if not amountDue.isdigit():
+    amountDue = float(amountDue)
+    if not isinstance(amountDue, float):
       return jsonify({'Alert!': 'Error somewhere!'}), 400
 
     newFuelQuote = Fuelquote(usercredentials_username = username, deliveryAddress = deliveryAddress["address"], deliveryDate = deliveryDate, gallonsRequested = gallonsRequested, suggestedPPG = suggestedPrice, amountDue = amountDue)
@@ -178,6 +181,12 @@ def fuelquote_endpoint():
     username = request.values.get('username')
 
     user = Clientinformation.query.filter_by(usercredentials_username = username).first()
+    userHistory = Fuelquote.query.filter_by(usercredentials_username = username).first()
+
+    if userHistory:
+      history = True
+    else:
+      history = False
 
     if user:
       dataToReturn = {
@@ -186,7 +195,8 @@ def fuelquote_endpoint():
         "address2": user.address2,
         "city": user.city,
         "state": user.state,
-        "zipcode": user.zipcode
+        "zipcode": user.zipcode,
+        "history": history
       }
       return json.dumps(dataToReturn)
     

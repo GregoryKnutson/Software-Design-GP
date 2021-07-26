@@ -8,18 +8,19 @@ const FuelQuote = () => {
 
     let address = {
         address1: "",
-        address2: "",
-        city: "",
-        state: "",
-        zip: ""
+        address2: " ",
+        city: " ",
+        state: " ",
+        zip: " "
     }
 
     const [gallonsRequestedState, setGallonsRequested] = useState("");
-    const [currAddress, setCurrAddress] = useState("")
+    const [currAddress, setCurrAddress] = useState(" ")
     const [deliveryAddressState, setDeliveryAddressState] = useState(address);
     const [deliveryDateState, setDeliveryDateState] = useState(new Date());
-    const [suggestedPriceState, setSuggestedPriceState] = useState("12");
-    const [amountDueState, setAmountDueState] = useState("500");
+    const [suggestedPriceState, setSuggestedPriceState] = useState(" ");
+    const [amountDueState, setAmountDueState] = useState(" ");
+    const [historyState, setHistoryState] = useState(false)
     const nothing = () => {}
 
 
@@ -32,22 +33,53 @@ const FuelQuote = () => {
         .then((response) => response.json())
         .then((result) => {
           console.log('Success: ', result);
+
+          if (result.address1 == undefined || result.city == undefined || result.state == undefined || result.zipcode == undefined){
+            alert("Please enter profile credentials")
+            window.location.assign("/profile")
+        }
+
           address.address1 = result.address1
           address.address2 = result.address2
           address.city = result.city
           address.state = result.state
           address.zip = result.zipcode
+
           setDeliveryAddressState(address)
           setCurrAddress(address.address1)
-          
+          setHistoryState(result.history)
         })
         .catch((error) => {
-          console.error('Error: ', error);
-        });
+          console.log('Error: ', error.response.data);
+        })
       }, [])
 
-
     const handleCalculate = () => {
+        const CURRENT_PPG = 1.5
+        let LOCATION_FACTOR
+        let RATE_HISTORY
+        let GALLONS_REQUESTED_FACTOR
+        const COMPANY_PROFIT_FACTOR = .1
+
+        if(deliveryAddressState.state == 'TX') LOCATION_FACTOR = .02
+        else LOCATION_FACTOR = .04
+
+        if (historyState == true) RATE_HISTORY = .01
+        else RATE_HISTORY = 0
+
+        if (parseInt(gallonsRequestedState) > 1000) GALLONS_REQUESTED_FACTOR = .02
+        else GALLONS_REQUESTED_FACTOR = .03
+
+        let MARGIN = (CURRENT_PPG * (LOCATION_FACTOR - RATE_HISTORY + GALLONS_REQUESTED_FACTOR + COMPANY_PROFIT_FACTOR))
+        console.log(MARGIN)
+        let tempSuggestedPPG = CURRENT_PPG + MARGIN
+        setSuggestedPriceState(tempSuggestedPPG)
+        let tempAmountDue = parseInt(gallonsRequestedState) * tempSuggestedPPG
+        setAmountDueState(tempAmountDue)
+    }
+
+
+    const handleSubmit = () => {
 
         let tempAddress = {
             address: currAddress,
@@ -61,10 +93,11 @@ const FuelQuote = () => {
 
         formData.append('gallonsRequested', gallonsRequestedState)
         formData.append('deliveryAddress', JSON.stringify(tempAddress))
-        console.log(deliveryDateState.toISOString().substring(0.,10))
         formData.append('deliveryDate', deliveryDateState.toISOString().substring(0,10))
         formData.append('suggestedPrice', suggestedPriceState)
+        console.log(suggestedPriceState)
         formData.append('amountDue', amountDueState)
+        console.log(amountDueState)
 
         fetch(
             `${process.env.API_URL}/api/fuelquote?token=${localStorage.getItem('token')}&username=${getUserId()}`,
@@ -127,24 +160,24 @@ const FuelQuote = () => {
                         />
                         <input className = "city"
                             type="text"
-                            name="address"
-                            id="address"
+                            name="city"
+                            id="city"
                             readOnly={!!deliveryAddressState.city}
                             value={deliveryAddressState.city}
                             onChange={deliveryAddressState.city ? nothing : setDeliveryAddressState}
                         />
                         <input className="state"
                             type="text"
-                            name="address"
-                            id="address"
+                            name="state"
+                            id="state"
                             readOnly={!!deliveryAddressState.state}
                             value={deliveryAddressState.state}
                             onChange={deliveryAddressState.state ? nothing : setDeliveryAddressState}
                         />
                         <input className="zip"
                             type="text"
-                            name="address"
-                            id="address"
+                            name="zip"
+                            id="zip"
                             readOnly={!!deliveryAddressState.zip}
                             value={deliveryAddressState.zip}
                             onChange={deliveryAddressState.zip ? nothing : setDeliveryAddressState}
@@ -197,8 +230,16 @@ const FuelQuote = () => {
                     <input 
                         className="calculate"
                         type= "button" 
-                        value="Calculate"
+                        value="Get Fuel Quote"
+                        disabled = {!gallonsRequestedState}
                         onClick={handleCalculate}
+                    />
+                    <input 
+                        className="calculate"
+                        type= "button" 
+                        value="Submit"
+                        disabled = {suggestedPriceState == " " || amountDueState == " "}
+                        onClick={handleSubmit}
                     />
                 </div>
             </div>
