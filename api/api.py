@@ -311,9 +311,6 @@ def pricing_endpoint():
   tempSuggestedPPG = str(tempSuggestedPPG)
   tempAmountDue = str(tempAmountDue)
 
-  print(tempSuggestedPPG)
-  print(tempAmountDue)
-
   dataToReturn = {
     "tempSuggestedPPG": tempSuggestedPPG,
     "tempAmountDue": tempAmountDue

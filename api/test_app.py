@@ -11,7 +11,7 @@ from flask_jwt_extended import create_access_token
 
 class FlaskTest(unittest.TestCase):
 
-    CURR_USERNAME = "Test117"
+    CURR_USERNAME = "Test123"
 
     FUELQUOTE_ADDRESS= {
         "address":"1234 Test Address",
@@ -121,12 +121,30 @@ class FlaskTest(unittest.TestCase):
         "state":"TX",
         "zip":"123"
     }
+    PRICING_OBJ = {
+        "state":"TX",
+        "gallonsRequested": "1500"
+    }
 
     def test1_home(self):
         tester= app.test_client(self)
         response= tester.get('http://localhost:5000/')
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
+
+    def test20_pricing(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:5000/api/pricing?username=' + FlaskTest.CURR_USERNAME,
+        data = FlaskTest.PRICING_OBJ)
+        responseData = json.loads(response.get_data(as_text=True))
+        self.assertEqual(responseData['tempSuggestedPPG'], '1.71')
+
+    def test21_pricing(self):
+        tester= app.test_client(self)
+        response= tester.post('http://localhost:5000/api/pricing?username=' + FlaskTest.CURR_USERNAME,
+        data = FlaskTest.PRICING_OBJ)
+        responseData = json.loads(response.get_data(as_text=True))
+        self.assertEqual(responseData['tempAmountDue'], '2565.0')
 
     def test2_fuelquote(self):
         tester= app.test_client(self)
@@ -250,6 +268,8 @@ class FlaskTest(unittest.TestCase):
         response= tester.get('http://localhost:5000/api/history?username=' + FlaskTest.CURR_USERNAME)
         statuscode= response.status_code
         self.assertEqual(statuscode, 200)
+
+        
 
 if __name__== "__main__":
     unittest.main()
