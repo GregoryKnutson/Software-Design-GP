@@ -161,14 +161,15 @@ def fuelquote_endpoint():
     if not gallonsRequested.isdigit():
       return jsonify({'Alert!': 'Error somewhere!'}), 400
     deliveryDate = request.form['deliveryDate']
-    print(deliveryDate)
     suggestedPrice = request.form['suggestedPrice']
-    suggestedPrice = float(suggestedPrice)
-    if not isinstance(suggestedPrice, float):
+    try:
+      suggestedPrice = float(suggestedPrice)
+    except: 
       return jsonify({'Alert!': 'Error somewhere!'}), 400
     amountDue = request.form['amountDue']
-    amountDue = float(amountDue)
-    if not isinstance(amountDue, float):
+    try:
+      amountDue = float(amountDue)
+    except: 
       return jsonify({'Alert!': 'Error somewhere!'}), 400
 
     newFuelQuote = Fuelquote(usercredentials_username = username, deliveryAddress = deliveryAddress["address"], deliveryDate = deliveryDate, gallonsRequested = gallonsRequested, suggestedPPG = suggestedPrice, amountDue = amountDue)
@@ -272,4 +273,50 @@ def history_endpoint():
 
   else:
     return jsonify({'No history found!'})
+
+@app.route('/api/pricing', methods=['POST'])
+def pricing_endpoint():
+  username = request.values.get('username')
+  gallonsRequested = request.form['gallonsRequested']
+  state = request.form['state']
+
+  userHistory = Fuelquote.query.filter_by(usercredentials_username = username).first()
+
+  if userHistory:
+    history = True
+  else:
+    history = False
+  
+  CURRENT_PPG = 1.5
+  COMPANY_PROFIT_FACTOR = 0.1
+
+  if(state == 'TX'): LOCATION_FACTOR = 0.02
+  else: LOCATION_FACTOR = 0.04
+
+  if(history): RATE_HISTORY = 0.01
+  else: RATE_HISTORY = 0
+
+  try: 
+    gallonsRequested = int(gallonsRequested)
+  except:
+    return jsonify({'Alert!': 'Error somewhere!'}), 400
+
+  if (gallonsRequested > 1000): GALLONS_REQUESTED_FACTOR = 0.02
+  else: GALLONS_REQUESTED_FACTOR = 0.03
+
+  MARGIN = (CURRENT_PPG * (LOCATION_FACTOR - RATE_HISTORY + GALLONS_REQUESTED_FACTOR + COMPANY_PROFIT_FACTOR))
+  tempSuggestedPPG = (CURRENT_PPG + MARGIN)
+  tempAmountDue = (gallonsRequested * tempSuggestedPPG)
+
+  tempSuggestedPPG = str(tempSuggestedPPG)
+  tempAmountDue = str(tempAmountDue)
+
+  print(tempSuggestedPPG)
+  print(tempAmountDue)
+
+  dataToReturn = {
+    "tempSuggestedPPG": tempSuggestedPPG,
+    "tempAmountDue": tempAmountDue
+  }
+  return json.dumps(dataToReturn)
 

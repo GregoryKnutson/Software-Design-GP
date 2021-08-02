@@ -11,7 +11,7 @@ from flask_jwt_extended import create_access_token
 
 class FlaskTest(unittest.TestCase):
 
-    CURR_USERNAME = "Test109"
+    CURR_USERNAME = "Test117"
 
     FUELQUOTE_ADDRESS= {
         "address":"1234 Test Address",
@@ -55,22 +55,22 @@ class FlaskTest(unittest.TestCase):
     FUELQUOTE_OBJ_BROKEN1={
         "gallonsRequested":"a",
         "deliveryAddress":json.dumps(FUELQUOTE_ADDRESS),
-        "deliveryDate":"Wed Jul 14 2021 14:29:00 GMT-0500 (Eastern Standard Time)",
+        "deliveryDate":"1233-01-02",
         "suggestedPrice":12,
         "amountDue":500
     }
     FUELQUOTE_OBJ_BROKEN2={
         "gallonsRequested":12,
         "deliveryAddress":json.dumps(FUELQUOTE_ADDRESS),
-        "deliveryDate":"Wed Jul 14 2021 14:29:00 GMT-0500 (Eastern Standard Time)",
+        "deliveryDate":"1233-01-02",
         "suggestedPrice":"A",
-        "amountDue":500
+        "amountDue":"500"
     }
     FUELQUOTE_OBJ_BROKEN3={
         "gallonsRequested":12,
         "deliveryAddress":json.dumps(FUELQUOTE_ADDRESS),
-        "deliveryDate":"Wed Jul 14 2021 14:29:00 GMT-0500 (Eastern Standard Time)",
-        "suggestedPrice":12,
+        "deliveryDate":"1233-01-02",
+        "suggestedPrice":"12",
         "amountDue":"A"
     }
     PROFILE_OBJ_BROKEN1={

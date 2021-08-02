@@ -55,27 +55,27 @@ const FuelQuote = () => {
       }, [])
 
     const handleCalculate = () => {
-        const CURRENT_PPG = 1.5
-        let LOCATION_FACTOR
-        let RATE_HISTORY
-        let GALLONS_REQUESTED_FACTOR
-        const COMPANY_PROFIT_FACTOR = .1
+        const formData = new FormData()
 
-        if(deliveryAddressState.state == 'TX') LOCATION_FACTOR = .02
-        else LOCATION_FACTOR = .04
+        formData.append('gallonsRequested', gallonsRequestedState)
+        formData.append('state', deliveryAddressState.state)
 
-        if (historyState == true) RATE_HISTORY = .01
-        else RATE_HISTORY = 0
+        fetch(`${process.env.API_URL}/api/pricing?token=${localStorage.getItem('token')}&userID=${getUserId()}`,
+        {
+            method: "POST",
+            body: formData,
+        }
+        )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log('Success: ', result);
+          setSuggestedPriceState(result.tempSuggestedPPG)
+          setAmountDueState(result.tempAmountDue)
 
-        if (parseInt(gallonsRequestedState) > 1000) GALLONS_REQUESTED_FACTOR = .02
-        else GALLONS_REQUESTED_FACTOR = .03
-
-        let MARGIN = (CURRENT_PPG * (LOCATION_FACTOR - RATE_HISTORY + GALLONS_REQUESTED_FACTOR + COMPANY_PROFIT_FACTOR))
-        console.log(MARGIN)
-        let tempSuggestedPPG = CURRENT_PPG + MARGIN
-        setSuggestedPriceState(tempSuggestedPPG)
-        let tempAmountDue = parseInt(gallonsRequestedState) * tempSuggestedPPG
-        setAmountDueState(tempAmountDue)
+        })
+        .catch((error) => {
+          console.error('Error: ', error);
+        })
     }
 
 
@@ -107,7 +107,7 @@ const FuelQuote = () => {
               body: formData,
             }
           )
-            .then((response) => response.json)
+            .then((response) => response.json())
             .then((result) => {
               console.log("Success: ", result);
               alert("Thank you!")
